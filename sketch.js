@@ -1,26 +1,82 @@
-let velY;
-let yCirculo;
-let xCirculo;
-let diametro;
+let imagensElementos;
+let elms;
+
+let elemClass = [];
+let numElementos = 15;
+
+let escolher;
+
+function preload() {
+    elem1 = loadImage('/data/elem1.jpg');
+    elem2 = loadImage('/data/elem2.jpg');
+    elem3 = loadImage('/data/elem3.jpg');
+    elem4 = loadImage('/data/elem4.jpg');
+    elem5 = loadImage('/data/elem5.jpg');
+    elem6 = loadImage('/data/elem6.jpg');
+    elem7 = loadImage('/data/elem7.jpg');
+    elem8 = loadImage('/data/elem8.png');
+    elem9 = loadImage('/data/elem9.png');
+}
 
 function setup() {
     createCanvas(windowWidth, windowHeight);
 
-    velY = 8;
-    diametro = 70;
-    yCirculo = 25;
+    imagensElementos = [elem1, elem2, elem3, elem4, elem5, elem6, elem7, elem8, elem9];
+    imagensElementos[Math.floor(Math.random(0, 8) * imagensElementos.length)];
+
+
+    escolher = shuffle(imagensElementos).slice(0, 3);
+
+
+    for (i = 0; i < numElementos; i++) {
+        elemClass[i] = new Elementos(random(0, width), -15, random(3, 8), 120);
+    }
 }
 
 function draw() {
     background(210);
 
-
-    ellipse(xCirculo, yCirculo, diametro);
-
-    yCirculo += velY;
-
-    if (yCirculo >= height || yCirculo <= 0) {
-        yCirculo = 25;
-        xCirculo = random(0, width);
+    for (i = 0; i < elemClass.length; i++) {
+        elemClass[i].desenhar();
+        elemClass[i].cicloMover();
+        elemClass[i].avaliarMover();
     }
+
+    image(escolher[0], 50, 50, 50, 50);
+    image(escolher[1], 105, 50, 50, 50);
+    image(escolher[2], 160, 50, 50, 50);
 }
+
+function apanharElem() {
+
+}
+
+
+
+
+class Elementos {
+    constructor(x, y, vely, diametro) {
+        this.x = x;
+        this.y = y;
+        this.vely = vely;
+        this.diametro = diametro;
+        this.imagem = imagensElementos[Math.floor(Math.random(0, 8) * imagensElementos.length)];
+    }
+
+    desenhar() {
+        image(this.imagem, this.x, this.y, this.diametro, this.diametro);
+    }
+
+    cicloMover() {
+        this.y += this.vely;
+    }
+
+    avaliarMover() {
+        if (this.y >= height) {
+            this.y = -15;
+            this.x = random(0, width);
+
+            this.imagem;
+        }
+    }
+} 
