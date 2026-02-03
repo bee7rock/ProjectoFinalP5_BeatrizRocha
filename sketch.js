@@ -40,17 +40,15 @@ function setup() {
 function draw() {
     background(210);
 
-
     if (perdeu == false) {
         for (i = 0; i < elemClass.length; i++) {
             elemClass[i].desenhar();
             elemClass[i].cicloMover();
             elemClass[i].avaliarMover();
+            //  elemClass[i].apanharElem();
         }
 
-        apanharElem();
     }
-
 
     fill(255);
     stroke(0);
@@ -63,22 +61,6 @@ function draw() {
     let imagem3 = text('0/1', 160, 55);
 
     text('Tens ' + tentativas + ' tentativas!', 15, 15);
-}
-
-function apanharElem() {
-    if (mouseX > escolher[0, 1, 2].x - escolher[0, 1, 2].diametro / 2 && mouseX < escolher[0, 1, 2].x + escolher[0, 1, 2].diametro / 2) {
-        if (mouseY > escolher[0, 1, 2].y - escolher[0, 1, 2].diametro / 2 && mouseY < escolher[0, 1, 2].y + escolher[0, 1, 2].diametro / 2) {
-            imagem1 = text('1/1', 50, 55);
-            imagem2 = text('1/1', 105, 55);
-            imagem3 = text('1/1', 160, 55);
-        }
-    } else {
-        tentativas--;
-
-        if (tentativas <= 0) {
-            perdeu = true;
-        }
-    }
 }
 
 class Elementos {
@@ -106,4 +88,43 @@ class Elementos {
             this.imagem;
         }
     }
-} 
+
+    /* apanharElem() {
+        if (mouseX > this.x - this.diametro / 2 && mouseX < this.x + this.diametro / 2) {
+            if (mouseY > this.y - this.diametro / 2 && mouseY < this.y + this.diametro / 2) {
+                imagem1 = text('1/1', 50, 55);
+            }
+        } else {
+            tentativas--;
+
+            if (tentativas <= 0) {
+                perdeu = true;
+            }
+        }
+    } */
+}
+
+
+class ElemEscolhidos {
+    constructor(x, y, vely, diametro) {
+        this.x = x;
+        this.y = y;
+        this.vely = vely;
+        this.diametro = diametro;
+    }
+
+    desenhar() {
+
+    }
+
+    cicloMover() {
+        this.y += this.vely;
+    }
+
+    avaliarMover() {
+        if (this.y >= height) {
+            this.y = -15;
+            this.x = random(0, width);
+        }
+    }
+}
