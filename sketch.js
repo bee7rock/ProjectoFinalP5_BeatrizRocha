@@ -6,6 +6,10 @@ let numElementos = 15;
 
 let escolher;
 
+let tentativas = 3;
+
+let perdeu = false;
+
 function preload() {
     elem1 = loadImage('/data/elem1.jpg');
     elem2 = loadImage('/data/elem2.jpg');
@@ -36,23 +40,46 @@ function setup() {
 function draw() {
     background(210);
 
-    for (i = 0; i < elemClass.length; i++) {
-        elemClass[i].desenhar();
-        elemClass[i].cicloMover();
-        elemClass[i].avaliarMover();
+
+    if (perdeu == false) {
+        for (i = 0; i < elemClass.length; i++) {
+            elemClass[i].desenhar();
+            elemClass[i].cicloMover();
+            elemClass[i].avaliarMover();
+        }
+
+        apanharElem();
     }
 
+
+    fill(255);
+    stroke(0);
+    strokeWeight(2);
     image(escolher[0], 50, 50, 50, 50);
+    let imagem1 = text('0/1', 50, 55);
     image(escolher[1], 105, 50, 50, 50);
+    let imagem2 = text('0/1', 105, 55);
     image(escolher[2], 160, 50, 50, 50);
+    let imagem3 = text('0/1', 160, 55);
+
+    text('Tens ' + tentativas + ' tentativas!', 15, 15);
 }
 
 function apanharElem() {
+    if (mouseX > escolher[0, 1, 2].x - escolher[0, 1, 2].diametro / 2 && mouseX < escolher[0, 1, 2].x + escolher[0, 1, 2].diametro / 2) {
+        if (mouseY > escolher[0, 1, 2].y - escolher[0, 1, 2].diametro / 2 && mouseY < escolher[0, 1, 2].y + escolher[0, 1, 2].diametro / 2) {
+            imagem1 = text('1/1', 50, 55);
+            imagem2 = text('1/1', 105, 55);
+            imagem3 = text('1/1', 160, 55);
+        }
+    } else {
+        tentativas--;
 
+        if (tentativas <= 0) {
+            perdeu = true;
+        }
+    }
 }
-
-
-
 
 class Elementos {
     constructor(x, y, vely, diametro) {
