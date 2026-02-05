@@ -1,12 +1,12 @@
 let imagensElementos;
 
 let elemClassN = [];
-let numElementosN = 15;
+let numElementosN = 10;
 
 let elemClassEs = [];
-let numElementosEs = 3;
+let numElementosEs = 2;
 
-let escolher;
+let escolher = [];
 
 let pontuacao_1 = 0;
 let pontuacao_2 = 0;
@@ -31,21 +31,27 @@ function preload() {
 function setup() {
     createCanvas(windowWidth, windowHeight);
 
+    let nums = [0, 1, 2, 3, 4, 5, 6, 7, 8]
     imagensElementos = [elem1, elem2, elem3, elem4, elem5, elem6, elem7, elem8, elem9];
     imagensElementos[Math.floor(Math.random(0, 8) * imagensElementos.length)];
 
 
-    escolher = shuffle(imagensElementos).slice(0, 3);
+    nums = shuffle(nums).slice(0, 3);
 
-    //  imagensElementos.splice(escolher);
-
+    for (i = 0; i < nums.length; i++) {
+        escolher[i] = imagensElementos[nums[i]]
+        imagensElementos.splice(nums[i], 1);
+    }
+    //   escolher = shuffle(nums).slice(0, 3);
+    console.log(escolher, nums)
+    //  imagensElementos.splice(escolher[0], 1);
 
     for (i = 0; i < numElementosN; i++) {
         elemClassN[i] = new Elementos(random(0, width), -15, random(3, 8), 120);
     }
 
     for (i = 0; i < numElementosEs; i++) {
-        elemClassEs[i] = new ElemEscolhidos(random(0, width), -15, random(3, 8), 60, escolher);
+        elemClassEs[i] = new ElemEscolhidos(random(0, width), -15, random(0, width), -15, random(0, width), -15, random(3, 8), 120, escolher);
     }
 }
 
@@ -106,28 +112,40 @@ class Elementos {
 
 
 class ElemEscolhidos {
-    constructor(x, y, vely, diametro, escolher) {
-        this.x = x;
-        this.y = y;
+    constructor(x_1, y_1, x_2, y_2, x_3, y_3, vely, diametro, escolher) {
+        this.x_1 = x_1;
+        this.y_1 = y_1;
+        this.x_2 = x_2;
+        this.y_2 = y_2;
+        this.x_3 = x_3;
+        this.y_3 = y_3;
         this.vely = vely;
         this.diametro = diametro;
         this.escolher = escolher;
     }
 
     desenhar() {
-        image(this.escolher[0], this.x, this.y, this.diametro, this.diametro);
-        image(this.escolher[1], this.x + 200, this.y + 200, this.diametro, this.diametro);
-        image(this.escolher[2], this.x + 100, this.y + 100, this.diametro, this.diametro);
+        image(this.escolher[0], this.x_1, this.y_1, this.diametro, this.diametro);
+        image(this.escolher[1], this.x_2 + 100, this.y_2 + 150, this.diametro, this.diametro);
+        image(this.escolher[2], this.x_3 + 250, this.y_3 + 200, this.diametro, this.diametro);
     }
 
     cicloMover() {
-        this.y += this.vely;
+        this.y_1 += this.vely;
+        this.y_2 += this.vely;
+        this.y_3 += this.vely;
     }
 
     avaliarMover() {
-        if (this.y >= height) {
-            this.y = -15;
-            this.x = random(0, width);
+        if (this.y_1 >= height && this.y_2 >= height && this.y_3 >= height) {
+            this.y_1 = -15;
+            this.x_1 = random(0, width);
+
+            this.y_2 = -15;
+            this.x_2 = random(0, width);
+
+            this.y_3 = -15;
+            this.x_3 = random(0, width);
         }
     }
 }
@@ -135,18 +153,38 @@ class ElemEscolhidos {
 function mousePressed() {
 
     if (perdeu == false) {
-        if (mouseX > ElemEscolhidos.x - ElemEscolhidos.diametro / 2 && mouseX < ElemEscolhidos.x + ElemEscolhidos.diametro / 2) {
-            if (mouseY > ElemEscolhidos.y - ElemEscolhidos.diametro / 2 && mouseY < ElemEscolhidos.y + ElemEscolhidos.diametro / 2) {
 
-                pontuacao_1 = 1;
-            }
-        } else {
-            tentativas--;
+        if (pontuacao_1 <= 0) {
+            if (mouseX > ElemEscolhidos.x_1 - ElemEscolhidos.diametro / 2 && mouseX < ElemEscolhidos.x_1 + ElemEscolhidos.diametro / 2) {
+                if (mouseY > ElemEscolhidos.y_1 - ElemEscolhidos.diametro / 2 && mouseY < ElemEscolhidos.y_1 + ElemEscolhidos.diametro / 2) {
 
-            if (tentativas <= 0) {
-                perdeu = true;
+                    pontuacao_1 = 1;
+
+                }
+            } else {
+                tentativas--;
+
+                if (tentativas <= 0) {
+                    perdeu = true;
+                }
             }
+
         }
     }
-
+    /* if (mouseX > ElemEscolhidos.x_2 - ElemEscolhidos.diametro / 2 && mouseX < ElemEscolhidos.x_2 + ElemEscolhidos.diametro / 2) {
+         if (mouseY > ElemEscolhidos.y_2 - ElemEscolhidos.diametro / 2 && mouseY < ElemEscolhidos.y_2 + ElemEscolhidos.diametro / 2) {
+ 
+             pontuacao_2 = 1;
+ 
+         }
+     }
+ 
+     if (mouseX > ElemEscolhidos.x_3 - ElemEscolhidos.diametro / 2 && mouseX < ElemEscolhidos.x_3 + ElemEscolhidos.diametro / 2) {
+         if (mouseY > ElemEscolhidos.y_3 - ElemEscolhidos.diametro / 2 && mouseY < ElemEscolhidos.y_3 + ElemEscolhidos.diametro / 2) {
+ 
+             pontuacao_3 = 1;
+ 
+         }
+     } */
 }
+
