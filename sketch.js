@@ -17,6 +17,7 @@ let tentativas = 3;
 let perdeu = false;
 let ganhou = false;
 
+
 function preload() {
     elem1 = loadImage('/data/elem1.jpg');
     elem2 = loadImage('/data/elem2.jpg');
@@ -32,25 +33,25 @@ function preload() {
 function setup() {
     createCanvas(windowWidth, windowHeight);
 
-    let nums = [0, 1, 2, 3, 4, 5, 6, 7, 8]
-    imagensElementos = [elem1, elem2, elem3, elem4, elem5, elem6, elem7, elem8, elem9];
-    imagensElementos[Math.floor(Math.random(0, 8) * imagensElementos.length)];
-
-    imageMode(CENTER);
-
-
-    nums = shuffle(nums).slice(0, 3);
-
-    for (i = 0; i < nums.length; i++) {
-        escolher[i] = imagensElementos[nums[i]]
-        imagensElementos.splice(nums[i], 1);
-    }
-    //   escolher = shuffle(nums).slice(0, 3);
-    console.log(escolher, nums)
-    //  imagensElementos.splice(escolher[0], 1);
-
-
     if (perdeu == false && ganhou == false) {
+
+        let nums = [0, 1, 2, 3, 4, 5, 6, 7, 8]
+        imagensElementos = [elem1, elem2, elem3, elem4, elem5, elem6, elem7, elem8, elem9];
+        imagensElementos[Math.floor(Math.random(0, 8) * imagensElementos.length)];
+
+        imageMode(CENTER);
+
+
+        nums = shuffle(nums).slice(0, 3);
+
+        for (i = 0; i < nums.length; i++) {
+            escolher[i] = imagensElementos[nums[i]]
+            imagensElementos.splice(nums[i], 1);
+        }
+
+        console.log(escolher, nums)
+
+
         for (i = 0; i < numElementosN; i++) {
             elemClassN[i] = new Elementos(random(0, width), -15, random(3, 8), 120);
         }
@@ -62,7 +63,7 @@ function setup() {
 }
 
 function draw() {
-    background(210);
+    background(225);
 
     if (perdeu == false && ganhou == false) {
         for (i = 0; i < elemClassN.length; i++) {
@@ -76,19 +77,20 @@ function draw() {
             elemClassEs[i].cicloMover();
             elemClassEs[i].avaliarMover();
         }
+
+        fill(255);
+        stroke(0);
+        strokeWeight(2);
+        image(escolher[0], 80, 85, 50, 50);
+        let imagem1 = text(`${pontuacao_1}/1`, 50, 55);
+        image(escolher[1], 135, 85, 50, 50);
+        let imagem2 = text(`${pontuacao_2}/1`, 105, 55);
+        image(escolher[2], 190, 85, 50, 50);
+        let imagem3 = text(`${pontuacao_3}/1`, 160, 55);
+
+        text('Tens ' + tentativas + ' tentativas!', 15, 15);
     }
 
-    fill(255);
-    stroke(0);
-    strokeWeight(2);
-    image(escolher[0], 80, 85, 50, 50);
-    let imagem1 = text(`${pontuacao_1}/1`, 50, 55);
-    image(escolher[1], 135, 85, 50, 50);
-    let imagem2 = text(`${pontuacao_2}/1`, 105, 55);
-    image(escolher[2], 190, 85, 50, 50);
-    let imagem3 = text(`${pontuacao_3}/1`, 160, 55);
-
-    text('Tens ' + tentativas + ' tentativas!', 15, 15);
 
     if (pontuacao_1 == 1 && pontuacao_2 == 1 && pontuacao_3 == 1) {
         ganhou = true;
@@ -96,6 +98,7 @@ function draw() {
     }
 
     if (tentativas <= 0) {
+        perdeu = true;
         text('perdeste', width / 2, height / 2);
     }
 }
@@ -121,6 +124,15 @@ class Elementos {
         if (this.y >= height) {
             this.y = -15;
             this.x = random(0, width);
+        }
+    }
+
+    avaliar() {
+        if (mouseX > this.x - this.diametro && mouseX < this.x + this.diametro) {
+            if (mouseY > this.y - this.diametro && mouseY < this.y + this.diametro) {
+                tentativas--;
+                text('Elemento errado!', width / 2, 5);
+            }
         }
     }
 }
@@ -154,8 +166,13 @@ class ElemEscolhidos {
     avaliarMover() {
         if (this.y_1 >= height && this.y_2 >= height && this.y_3 >= height) {
             this.y_1 = -15;
+            this.x_1 = random(0, width);
+
             this.y_2 = -15;
+            this.x_2 = random(0, width);
+
             this.y_3 = -15;
+            this.x_3 = random(0, width);
         }
     }
 
@@ -172,12 +189,6 @@ class ElemEscolhidos {
             if (mouseY > this.y_3 - this.diametro && mouseY < this.y_3 + this.diametro) {
                 pontuacao_3 = 1;
             }
-        } else {
-            tentativas--;
-
-            if (tentativas <= 0) {
-                perdeu = true;
-            }
         }
     }
 }
@@ -187,6 +198,8 @@ function mousePressed() {
         for (i = 0; i < numElementosEs; i++) {
             elemClassEs[i].avaliar();
         }
+
+
+        elemClassN[1].avaliar();
     }
 }
-
