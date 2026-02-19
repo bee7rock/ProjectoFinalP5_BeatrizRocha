@@ -25,13 +25,19 @@ let aigenY = -15;
 let aigenVelY;
 let diametroAI = 120;
 
+function windowResized() {
+    resizeCanvas(windowWidth, windowHeight);
+}
+
 function preload() {
+    pincel = loadImage('/data/pincel.png')
+    backgroundIMG = loadImage('/data/background.jpg');
     pintura = loadImage('/data/pintura.png');
     aigen = loadImage('/data/aigen.png');
-    elem1 = loadImage('/data/elem1.jpg');
-    elem2 = loadImage('/data/elem2.jpg');
-    elem3 = loadImage('/data/elem3.jpg');
-    elem4 = loadImage('/data/elem4.jpg');
+    elem1 = loadImage('/data/elem1.png');
+    elem2 = loadImage('/data/elem2.png');
+    elem3 = loadImage('/data/elem3.png');
+    elem4 = loadImage('/data/elem4.png');
     elem5 = loadImage('/data/elem5.jpg');
     elem6 = loadImage('/data/elem6.jpg');
     elem7 = loadImage('/data/elem7.jpg');
@@ -81,6 +87,8 @@ function setup() {
 function draw() {
     background(225);
 
+    image(backgroundIMG, width / 2, height / 2, width, height);
+
     if (perdeu == false && ganhou == false) {
         for (i = 0; i < elemClassN.length; i++) {
             elemClassN[i].desenhar();
@@ -119,16 +127,21 @@ function draw() {
         textAlign(CENTER);
         text('Conseguiste completar a pintura! Reinicia o site para recomeçar.', width / 2, 55);
         image(pintura, width / 2, height / 2, 700, 550);
+        perdeu = false;
     }
 
     if (tentativas <= 0) {
         perdeu = true;
+        ganhou = false;
     }
 
     if (perdeu == true) {
         textAlign(CENTER);
         text('Perdeste... :( Reinicia o site para recomeçar.', width / 2, 55);
+        ganhou = false;
     }
+
+    image(pincel, mouseX, mouseY, 100, 100);
 }
 
 class ElemPerder {
@@ -159,6 +172,7 @@ class ElemPerder {
         if (mouseX > this.x - this.diametro && mouseX < this.x + this.diametro) {
             if (mouseY > this.y - this.diametro && mouseY < this.y + this.diametro) {
                 perdeu = true;
+                ganhou = false;
             }
         }
     }
