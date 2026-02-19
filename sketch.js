@@ -6,6 +6,9 @@ let numElementosN = 10;
 let elemClassEs = [];
 let numElementosEs = 2;
 
+let elemClassPerder = [];
+let numElemPerder = 3;
+
 let escolher = [];
 
 let pontuacao_1 = 0;
@@ -17,8 +20,14 @@ let tentativas = 3;
 let perdeu = false;
 let ganhou = false;
 
+let aigenX;
+let aigenY = -15;
+let aigenVelY;
+let diametroAI = 120;
 
 function preload() {
+    pintura = loadImage('/data/pintura.png');
+    aigen = loadImage('/data/aigen.png');
     elem1 = loadImage('/data/elem1.jpg');
     elem2 = loadImage('/data/elem2.jpg');
     elem3 = loadImage('/data/elem3.jpg');
@@ -32,6 +41,9 @@ function preload() {
 
 function setup() {
     createCanvas(windowWidth, windowHeight);
+
+    aigenX = random(0, width);
+    aigenVelY = random(3, 8);
 
     if (perdeu == false && ganhou == false) {
 
@@ -59,6 +71,10 @@ function setup() {
         for (i = 0; i < numElementosEs; i++) {
             elemClassEs[i] = new ElemEscolhidos(random(0, width), -15, random(0, width), -15, random(0, width), -15, random(3, 8), 120, escolher);
         }
+
+        for (i = 0; i < numElemPerder; i++) {
+            elemClassPerder[i] = new ElemPerder(random(0, width), -15, random(3, 8), 120);
+        }
     }
 }
 
@@ -78,6 +94,12 @@ function draw() {
             elemClassEs[i].avaliarMover();
         }
 
+        for (i = 0; i < elemClassPerder.length; i++) {
+            elemClassPerder[i].desenhar();
+            elemClassPerder[i].cicloMover();
+            elemClassPerder[i].avaliarMover();
+        }
+
         fill(255);
         stroke(0);
         strokeWeight(2);
@@ -94,12 +116,51 @@ function draw() {
 
     if (pontuacao_1 == 1 && pontuacao_2 == 1 && pontuacao_3 == 1) {
         ganhou = true;
-        text('ganhaste', width / 2, height / 2);
+        textAlign(CENTER);
+        text('Conseguiste completar a pintura! Reinicia o site para recomeçar.', width / 2, 55);
+        image(pintura, width / 2, height / 2, 700, 550);
     }
 
     if (tentativas <= 0) {
         perdeu = true;
-        text('perdeste', width / 2, height / 2);
+    }
+
+    if (perdeu == true) {
+        textAlign(CENTER);
+        text('Perdeste... :( Reinicia o site para recomeçar.', width / 2, 55);
+    }
+}
+
+class ElemPerder {
+    constructor(x, y, vely, diametro) {
+        this.x = x;
+        this.y = y;
+        this.vely = vely;
+        this.diametro = diametro;
+        this.imagem = aigen;
+    }
+
+    desenhar() {
+        image(this.imagem, this.x, this.y, this.diametro, this.diametro);
+    }
+
+    cicloMover() {
+        this.y += this.vely;
+    }
+
+    avaliarMover() {
+        if (this.y >= height) {
+            this.y = -15;
+            this.x = random(0, width);
+        }
+    }
+
+    avaliar() {
+        if (mouseX > this.x - this.diametro && mouseX < this.x + this.diametro) {
+            if (mouseY > this.y - this.diametro && mouseY < this.y + this.diametro) {
+                perdeu = true;
+            }
+        }
     }
 }
 
@@ -131,7 +192,6 @@ class Elementos {
         if (mouseX > this.x - this.diametro && mouseX < this.x + this.diametro) {
             if (mouseY > this.y - this.diametro && mouseY < this.y + this.diametro) {
                 tentativas--;
-                text('Elemento errado!', width / 2, 5);
             }
         }
     }
@@ -199,7 +259,12 @@ function mousePressed() {
             elemClassEs[i].avaliar();
         }
 
+        for (i = 0; i < numElementosN; i++) {
+            elemClassN[i].avaliar();
+        }
 
-        elemClassN[1].avaliar();
+        for (i = 0; i < numElemPerder; i++) {
+            elemClassPerder[i].avaliar();
+        }
     }
 }
