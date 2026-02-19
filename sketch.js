@@ -38,8 +38,8 @@ function preload() {
     elem2 = loadImage('/data/elem2.png');
     elem3 = loadImage('/data/elem3.png');
     elem4 = loadImage('/data/elem4.png');
-    elem5 = loadImage('/data/elem5.jpg');
-    elem6 = loadImage('/data/elem6.jpg');
+    elem5 = loadImage('/data/elem5.png');
+    elem6 = loadImage('/data/elem6.png');
     elem7 = loadImage('/data/elem7.jpg');
     elem8 = loadImage('/data/elem8.png');
     elem9 = loadImage('/data/elem9.png');
@@ -61,13 +61,14 @@ function setup() {
 
 
         nums = shuffle(nums).slice(0, 3);
+        console.log(escolher, nums)
 
         for (i = 0; i < nums.length; i++) {
             escolher[i] = imagensElementos[nums[i]]
             imagensElementos.splice(nums[i], 1);
         }
 
-        console.log(escolher, nums)
+
 
 
         for (i = 0; i < numElementosN; i++) {
@@ -107,6 +108,8 @@ function draw() {
             elemClassPerder[i].cicloMover();
             elemClassPerder[i].avaliarMover();
         }
+
+        text('Apanhe os Elementos corretos para formar a pintura!', width / 2, 5, 100)
 
         fill(255);
         stroke(0);
