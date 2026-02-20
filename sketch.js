@@ -4,7 +4,7 @@ let elemClassN = [];
 let numElementosN = 10;
 
 let elemClassEs = [];
-let numElementosEs = 2;
+let numElementosEs = 3;
 
 let elemClassPerder = [];
 let numElemPerder = 3;
@@ -40,7 +40,7 @@ function preload() {
     elem4 = loadImage('/data/elem4.png');
     elem5 = loadImage('/data/elem5.png');
     elem6 = loadImage('/data/elem6.png');
-    elem7 = loadImage('/data/elem7.jpg');
+    elem7 = loadImage('/data/elem7.png');
     elem8 = loadImage('/data/elem8.png');
     elem9 = loadImage('/data/elem9.png');
 }
@@ -50,6 +50,8 @@ function setup() {
 
     aigenX = random(0, width);
     aigenVelY = random(3, 8);
+
+
 
     if (perdeu == false && ganhou == false) {
 
@@ -109,7 +111,10 @@ function draw() {
             elemClassPerder[i].avaliarMover();
         }
 
-        text('Apanhe os Elementos corretos para formar a pintura!', width / 2, 5, 100)
+        push();
+        textAlign(CENTER);
+        text('Apanhe os elementos corretos para formar a pintura!', width / 2, 15);
+        pop();
 
         fill(255);
         stroke(0);
