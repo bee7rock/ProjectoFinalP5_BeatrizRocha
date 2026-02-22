@@ -144,8 +144,14 @@ function draw() {
     }
 
     if (perdeu == true) {
+        push();
+        textSize(50);
+        noStroke();
+        fill(0);
+        text('O que significa ser humano?', width / 2, 355);
+        pop();
         textAlign(CENTER);
-        text('Perdeste... :( Reinicia o site para recomeçar.', width / 2, 55);
+        text('Perdeste... Reinicia o site para recomeçar.', width / 2, 55);
         ganhou = false;
     }
 
